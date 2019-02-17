@@ -21,6 +21,8 @@ Just clone the folder on your computer and once in the folder, run command `http
 
 To play, open `localhost:8080` in two tabs under same browser. Set one player for Ethereum and other for Zilliqa and play! The top score will get the sword of Aragorn as a reward. As users continue to play, the sword will keep switching between them based on the highest score.
 
+IPFS Demo: [https://cloudflare-ipfs.com/ipfs/QmR2nvCacJAQTK9drGzv1bYb95JWu7Bh1s18cgAsjxuR3Z/](https://cloudflare-ipfs.com/ipfs/QmR2nvCacJAQTK9drGzv1bYb95JWu7Bh1s18cgAsjxuR3Z/)
+
 ## Understanding the code
 
 1. Find `contracts/HelloEthereum.scilla` and `contracts/HelloZilliqa.sol` in the project folder.
