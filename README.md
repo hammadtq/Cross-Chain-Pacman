@@ -24,7 +24,7 @@ To play, open `localhost:8080` in two tabs under same browser. Set one player fo
 1. Find `contracts/HelloEthereum.scilla` and `contracts/HelloZilliqa.sol` in the project folder.
 2. Deploy `contracts/HelloZilliqa.sol` to your favourite Ethereum testnet using remix IDE. I used ropsten and source code has ropsten contract address.
 3. For deploying `contracts/HelloEthereum.scilla` on Zilliqa dev-net you will need to follow the quickstart example given [here](https://github.com/Zilliqa/Zilliqa-JavaScript-Library). For cross-reference you can see my deployment script provided in `zillia-deployment-script/deployToZilliqa.js`.
-4. Change your ethereum testnet contract address in `js/ethereum.js`.
-5. Change your Zilliqa wallet private key in `js/zilliqa.js`.
+4. Change to your ethereum testnet contract address in `js/ethereum.js`.
+5. Change to your Zilliqa wallet private key in `js/zilliqa.js`.
 6. To make the game compatible with IPFS, I browserified the Zilliqa-JavaScript-Library and included useful libraries here as `js/zilliqa-lib.js`.
-7. All ethereum and zilliqa contract interaction functions are in `js/ethereum.js` and `js/zilliqa.js`
+7. All ethereum and zilliqa contract interaction functions are in `js/ethereum.js` and `js/zilliqa.js`.
