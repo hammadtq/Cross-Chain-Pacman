@@ -1,6 +1,6 @@
 # Cross-Chain-Pacman
 
-#Hackathon
+# Hackathon
 ETHDenver February, 2019
 
 # Tagline:
