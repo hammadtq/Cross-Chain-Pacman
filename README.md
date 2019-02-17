@@ -1,5 +1,7 @@
 # Cross-Chain-Pacman
 
+![Screenshot](screenshot.png)
+
 ## Hackathon
 ETHDenver: 15-17 February, 2019
 
