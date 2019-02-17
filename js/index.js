@@ -865,7 +865,7 @@ var PACMAN = (function () {
 
     function loseLife() {
       console.log(scoreForBlockchain);
-      gameEndScore(scoreForBlockchain);
+      //gameEndScore(scoreForBlockchain);
         setState(WAITING);
         user.loseLife();
         if (user.getLives() > 0) {
