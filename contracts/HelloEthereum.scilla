@@ -1,0 +1,58 @@
+scilla_version 0
+
+(* HelloEthereum contract *)
+
+import ListUtils
+
+(***************************************************)
+(*               Associated library                *)
+(***************************************************)
+library HelloWorld
+
+
+(***************************************************)
+(*             The contract definition             *)
+(***************************************************)
+
+contract HelloEthereum
+(owner: ByStr20)
+
+field fName : String = ""
+field age : Int32 = Int32 0
+field sword : Int32 = Int32 0
+
+transition setPlayer (fullName : String, userAge : Int32)
+  fName := fullName;
+  age := userAge;
+  e = {_eventname : "setPlayer()"};
+  event e
+end
+
+transition getPlayer ()
+    r <- fName;
+    e = {_eventname: "getPlayer()"; msg: r};
+    event e
+end
+
+transition setSword (swordValue : Int32)
+  sword := swordValue;
+  e = {_eventname : "setSword()"};
+  event e
+end
+
+transition getSword ()
+    r <- sword;
+    e = {_eventname: "getSword()"; msg: r};
+    event e
+end
+
+transition reset ()
+    temp_fname = "";
+    temp_age = Int32 0;
+    temp_sword = Int32 0;
+    fName := temp_fname;
+    age := temp_age;
+    sword := temp_sword;
+    e = {_eventname: "reset()"};
+    event e
+end
