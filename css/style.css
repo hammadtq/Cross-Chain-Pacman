@@ -1,0 +1,59 @@
+body {
+  background-color: black;
+}
+
+#pacman {
+  height: 470px;
+  width: 382px;
+  border-radius: 5px;
+  margin: 20px auto;
+}
+
+#shim {
+  font-family: 'Permanent Marker', cursive;
+  position: absolute;
+  visibility: hidden
+}
+
+#playerSettings {
+  text-align: center;
+  color: yellow;
+}
+
+.playerDisplay {
+  text-align: center;
+  color: yellow;
+  width:300px;
+  margin:0 auto;
+}
+
+table {
+  background-color: blue;
+  border: 1px solid black;
+  float:left;
+  width:148px;
+}
+
+
+h1 {
+  font-family: 'Permanent Marker', cursive;
+  text-align: center;
+  color: yellow;
+}
+
+hr{
+  color: yellow;
+  background-color: yellow;
+  height: 3px;
+}
+
+.gameScreen {
+  width: 342px;
+  margin: 0px auto;
+  font-family: sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: #0000FF;
+}

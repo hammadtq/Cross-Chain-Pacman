@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Zilliqa + Ethereum Pacman</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Permanent+Marker'>
+      <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="shim">shim for font face</div>
+<h1>ZIL - ETH Pacman</h1>
+<div class="gameScreen">
+  <div id ="blockchainIndication" class="playerDisplay"></div><br/>
+  <div id="highScore" class="playerDisplay"></div><br/>
+  <div id="reward" class="playerDisplay"></div>
+  <div id="pacman"></div>
+</div>
+<hr></hr>
+<h1>Player Settings</h1>
+<div id="playerSettings">
+  <div>Select Your Blockchain: <select id="blockchain">
+  <option value="eth" selected>Ethereum</option>
+  <option value="zil">Zilliqa</option>
+</select></div><br/>
+  <div>Player Name: <input type="text" id="playerName"></div><br/>
+  <div>Player Age: <input type="number" id="playerAge"></div><br/>
+  <button id="setPlayer" type="submit">Submit</button>
+</div><br/>
+<hr></hr><br/>
+<div class="playerDisplay">
+  <table>
+    <th colspan="2">Etherem Player</th>
+    <tr>
+      <td>Name: <span id="ethereumPlayerName"></span></td>
+      <td>Age: <span id="ethereumPlayerAge"></span></td>
+    </tr>
+    <tr>
+      <td colspan="2"><button id="resetEthereumContract" type="submit">Reset</button></td>
+    </tr>
+  </table>
+</div>
+<div class="playerDisplay">
+  <table>
+    <th colspan="2">Zilliqa Player</th>
+    <tr>
+      <td>Name: <span id="zilliqaPlayerName"></span></td>
+      <td>Age: <span id="zilliqaPlayerAge"></span></td>
+    </tr>
+    <tr>
+      <td colspan="2"><button id="resetZilliqaContract" type="submit">Reset</button></td>
+    </tr>
+  </table>
+</div><p>&nbsp;</p><p>&nbsp;</p>
+<p>&nbsp;</p><p>&nbsp;</p>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+  <script  src="js/index.js"></script>
+  <script  src="js/ethereum.js"></script>
+  <script  src="js/zilliqa-lib.js"></script>
+  <script  src="js/zilliqa.js"></script>
+  <script>
+
+
+    loadBlockchainFunctions = async function(){
+
+      if(sessionStorage.getItem('blockchain') != undefined && sessionStorage.getItem('blockchain') == 'eth'){
+          $("#blockchainIndication").html("You are on Ethereum");
+      }else if(sessionStorage.getItem('blockchain') != undefined && sessionStorage.getItem('blockchain') == 'zil'){
+        $("#blockchainIndication").html("You are on Zilliqa");
+      }
+
+      if(localStorage.getItem('swordOfAragorn') == undefined){
+        localStorage.setItem('swordOfAragorn', "0");
+        $("#reward").html("Nobody is a winner yet!");
+      }else if(localStorage.getItem('swordOfAragorn') == "0"){
+        $("#reward").html("Nobody is a winner yet!");
+      }else if(localStorage.getItem('swordOfAragorn') == "eth"){
+        if(sessionStorage.getItem('blockchain') != undefined && sessionStorage.getItem('blockchain') == 'eth'){
+              $("#reward").html("You have the <img src='./images/sword40.png'> of the Aragorn!");
+        }else{
+            $("#reward").html("You are a loser!");
+        }
+      }else if(localStorage.getItem('swordOfAragorn') == "zil"){
+        if(sessionStorage.getItem('blockchain') != undefined && sessionStorage.getItem('blockchain') == 'zil'){
+            $("#reward").html("You have the <img src='./images/sword40.png'> of the Aragorn!");
+        }else{
+            $("#reward").html("You are a loser!");
+        }
+      }
+      var ethScore = 0;
+      var zilScore = 0;
+      if(localStorage.getItem('blockchain-eth') != undefined){
+        ethScore = localStorage.getItem('blockchain-eth');
+      }
+      if(localStorage.getItem('blockchain-zil') != undefined){
+        zilScore = localStorage.getItem('blockchain-zil');
+      }
+      console.log(ethScore);
+      console.log(zilScore);
+
+      if(ethScore > zilScore){
+        $("#highScore").html("High Score: "+ethScore+" - ETH is winning!");
+      }else if(ethScore < zilScore){
+        $("#highScore").html("High Score: "+zilScore+" - ZIL is winning!");
+      }
+
+      loadEthereum = async function(){
+        await loadWeb3();
+        await setupContractEthereum();
+        await getAccount();
+        var playerDetails = await getPlayerFromEthereum();
+        console.log(playerDetails);
+        var getSwordStatus = await getSwordFromEthereum();
+        console.log(getSwordStatus);
+
+        if(playerDetails[0] == ""){
+          playerDetails[0] = "N/A";
+        }
+        $("#ethereumPlayerName").html(playerDetails[0]);
+        $("#ethereumPlayerAge").html(playerDetails[1]);
+      }
+
+      loadZilliqa = async function(){
+        await setZilliqa();
+        var state = await getStateFromZilliqa();
+        console.log(state[0]["value"]);
+
+        if(state[1]["value"] == ""){
+          state[1]["value"] = "N/A";
+        }
+        $("#zilliqaPlayerName").html(state[1]["value"]);
+        $("#zilliqaPlayerAge").html(state[0]["value"]);
+      }
+
+      loadEthereum();
+      loadZilliqa();
+
+      $("#setPlayer").click(async function() {
+
+         event.preventDefault();
+         console.log($("#blockchain")[0].selectedIndex);
+         if($("#blockchain")[0].selectedIndex == '0'){
+           localStorage.setItem('blockchain-eth', '0');
+           sessionStorage.setItem('blockchain', 'eth');
+           var result = await setPlayerOnEthereum($("#playerName").val(), $("#playerAge").val());
+           console.log(result);
+         }else{
+           localStorage.setItem('blockchain-zil', '0');
+           sessionStorage.setItem('blockchain', 'zil');
+           var result = await setPlayerOnZilliqa($("#playerName").val(), $("#playerAge").val());
+           console.log(result);
+         }
+
+      });
+
+
+      $("#resetEthereumContract").click(async function() {
+        event.preventDefault();
+
+          if(localStorage.getItem('blockchain-eth') != undefined){
+            localStorage.removeItem('blockchain-eth');
+            if(sessionStorage.getItem('blockchain') != undefined){
+              sessionStorage.removeItem('blockchain');
+            }
+          }
+
+          var result = await resetEthereumContract();
+          console.log(result);
+      });
+
+      $("#resetZilliqaContract").click(async function() {
+        event.preventDefault();
+
+        if(localStorage.getItem('blockchain-zil') != undefined){
+          localStorage.removeItem('blockchain-zil');
+          if(sessionStorage.getItem('blockchain') != undefined){
+            sessionStorage.removeItem('blockchain');
+          }
+        }
+
+          var result = await resetZilliqaContract();
+          console.log(result);
+      });
+
+    }
+
+    gameEndScore = async function(score){
+      var ethScore = 0;
+      var zilScore = 0;
+      if(sessionStorage.getItem('blockchain') != undefined && sessionStorage.getItem('blockchain') == 'eth'){
+        localStorage.setItem('blockchain-eth', score);
+        ethScore = localStorage.getItem('blockchain-eth');
+      }else if(sessionStorage.getItem('blockchain') != undefined && sessionStorage.getItem('blockchain') == 'zil'){
+        localStorage.setItem('blockchain-zil', score);
+        zilScore = localStorage.getItem('blockchain-zil');
+      }
+      console.log(ethScore);
+      console.log(zilScore);
+
+      var swordOfAragorn = localStorage.getItem('swordOfAragorn');
+      if(ethScore > zilScore && swordOfAragorn != 'eth'){
+        localStorage.setItem('swordOfAragorn', "eth");
+        var result = await setSwordonEthereum("1");
+        console.log(result);
+        if(swordOfAragorn == 'zil'){
+          var result = await setSwordOnZilliqa("0");
+          console.log(result);
+        }
+      }else if(zilScore > ethScore && swordOfAragorn != 'zil'){
+        localStorage.setItem('swordOfAragorn', "zil");
+        var result = await setSwordOnZilliqa("1");
+        console.log(result);
+        if(swordOfAragorn == 'eth'){
+          var result = await setSwordonEthereum("0");
+          console.log(result);
+        }
+      }
+
+
+
+
+    }
+
+
+    window.onload = loadBlockchainFunctions;
+  </script>
+</body>
+</html>
