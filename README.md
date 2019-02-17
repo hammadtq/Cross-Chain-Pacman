@@ -1,5 +1,8 @@
 # Cross-Chain-Pacman
 
+#Hackathon
+ETHDenver February, 2019
+
 # Tagline:
 The world is going to be chain-agnostic! Here is the proof!
 
